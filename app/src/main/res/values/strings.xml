@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">LacTemperature</string>
+    <string name="btnNouveauReleve">"Nouveau Relevé "</string>
+    <string name="btnListeReleve">"Liste des relevés "</string>
+    <string name="btnAffichageReleve">Afficher un relevé</string>
+    <string name="btnRetour">Retour</string>
+    <string name="btnAnnuler">Annuler</string>
+    <string name="btnValider">Valider</string>
+    <string name="btnFahrenheit">Fahrenheit</string>
+    <string name="btnCelsius">Celsius</string>
+</resources>
