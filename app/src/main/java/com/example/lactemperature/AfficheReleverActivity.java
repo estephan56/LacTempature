@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 public class AfficheReleverActivity extends Activity {
+    // déclarations des attributs utiles au calendrier
     Button selectDate;
     TextView date;
     DatePickerDialog datePickerDialog;

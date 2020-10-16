@@ -9,7 +9,7 @@
         android:id="@+id/textViewNewReleve"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nouveau relevé"
+        android:text="@string/StringNewReleve"
         android:gravity="center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             android:layout_weight="1"
-            android:text="Choisir une date" />
+            android:text="@string/btnDate" />
 
         <EditText
             android:id="@+id/editTextDate"
@@ -37,17 +37,18 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="date"
-            android:hint="Date"/>
+            android:hint="@string/editTextDate"
+            android:autofillHints="" />
 
         <TextView
             android:id="@+id/textViewHeure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Heure : "
+            android:text="@string/TextViewHeure"
             android:layout_marginTop="25dp"/>
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinnerNewChoixHeure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -58,13 +59,14 @@
             android:ems="10"
             android:inputType="number"
             android:layout_marginTop="25dp"
-            android:hint="Température (C°)"/>
+            android:hint="@string/editTextNbTemp"
+            android:autofillHints=""/>
 
         <TextView
             android:id="@+id/textViewChoixLac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choix du lac :"
+            android:text="@string/StringChoixLac"
             android:layout_marginTop="25dp"/>
 
         <Spinner
@@ -77,7 +79,7 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Coordonnées GPS"
+            android:text="@string/CoordGps"
             android:layout_marginTop="25dp"/>
 
         <LinearLayout

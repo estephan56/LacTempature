@@ -8,4 +8,15 @@
     <string name="btnValider">Valider</string>
     <string name="btnFahrenheit">Fahrenheit</string>
     <string name="btnCelsius">Celsius</string>
+    <string name="StringAffichageReleve">Affichage relevé</string>
+    <string name="btnDate">Choisir une date</string>
+    <string name="StringNewReleve">Nouveau relevé</string>
+    <string name="StringChoixLac">Choix du lac</string>
+    <string name="StringChoixMois">Choix du mois</string>
+    <string name="TextViewMoyenneTemp">Moyenne température C°/F°</string>
+    <string name="TextViewHeure">Heure</string>
+    <string name="editTextDate">Date</string>
+    <string name="editTextNbTemp">Température (C°)</string>
+    <string name="CoordGps">Coordonées GPS</string>
+    <string name="TextViewTemp">Température</string>
 </resources>
