@@ -5,9 +5,13 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -27,6 +31,8 @@ public class NewReleveActivity extends Activity {
 
         selectDate2 = findViewById(R.id.btnDateNewR);
         date = findViewById(R.id.editTextDate);
+
+        final String[] uneHeure = new String[1];
 
         Button btnAnnuler = (Button) findViewById(R.id.btnAnnulerNewR);
         //on va créer un écouteur pour un groupe de boutons
@@ -57,6 +63,26 @@ public class NewReleveActivity extends Activity {
         };
         selectDate2.setOnClickListener(ecouteur);
         btnAnnuler.setOnClickListener(ecouteur);
+
+
+        //gestion de la liste déroulante des heures
+        final Spinner spinnerNewChoixHeure = (Spinner) findViewById(R.id.spinnerNewChoixHeure);
+        String[] lesHeures = {"6h", "12h", "18h", "0h"};
+        ArrayAdapter<String> dataAdapterR = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lesHeures);
+        dataAdapterR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerNewChoixHeure.setAdapter(dataAdapterR);
+        spinnerNewChoixHeure.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                uneHeure[0] = String.valueOf(spinnerNewChoixHeure.getSelectedItem());
+                Toast.makeText(NewReleveActivity.this, "Vous avez choisi : " + "\nl'heure : " + uneHeure[0], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
     }
 }
