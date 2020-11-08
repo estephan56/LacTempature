@@ -51,7 +51,8 @@
             android:id="@+id/spinnerNewChoixHeure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/editTextNumberTemperature"
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:hint="@string/editTextNbTemp"
             android:autofillHints=""/>
 
@@ -68,12 +69,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/StringChoixLac"
-            android:layout_marginTop="25dp"/>
+            android:layout_marginTop="15dp"/>
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/spinnerNewChoixLac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             />
 
         <TextView

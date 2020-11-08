@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DAOBdd {
     static final int VERSION_BDD =1;
     private static final String NOM_BDD = "lacTemperature.db";
@@ -129,5 +132,24 @@ public class DAOBdd {
     }
     public Cursor getDataLac(){
         return db.rawQuery("SELECT * FROM tlac", null);
+    }
+
+    public List<String> getAllNomLac(){
+        List<String> listeNomLacs = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT Nom FROM tlac", null);
+        if(c.moveToFirst()) {
+            do {
+                listeNomLacs.add(c.getString(0));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return listeNomLacs;
+    }
+
+    public void deleteLacs(){
+        db.execSQL("delete from "+ TABLE_LAC);
+        db.close();
+
     }
 }

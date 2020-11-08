@@ -50,9 +50,10 @@
             android:text="@string/StringChoixLac" />
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/spinnerAfficheChoixLac"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
@@ -103,7 +104,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="140dp">
 
         <Button
             style="@style/styleBouton"

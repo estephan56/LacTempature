@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CreateBDD extends SQLiteOpenHelper {
     //Table Lac
     private static final String TABLE_LAC = "tlac";
-    static final String COL_IDLAC = "_id";
+    static final String COL_IDLAC = "_id_lac";
     private static final String COL_NOM = "Nom";
     private static final String COL_COORDONNEESLAT = "CoordonneesLat";
     private static final String COL_COORDONNEESLONG = "CoordonneesLong";
@@ -24,10 +24,15 @@ public class CreateBDD extends SQLiteOpenHelper {
     private static final String COL_TEMPERATURE12H = "Temperature12h";
     private static final String COL_TEMPERATURE18H = "Temperature18h";
     private static final String COL_TEMPERATURE24H = "Temperature24h";
+    private static final String COL_FK_IDLAC = "id_lac";
     private static final String CREATE_TABLERELEVE = "CREATE TABLE " +
             TABLE_RELEVE + " ("+COL_IDRELEVE+" INTEGER PRIMARY KEY AUTOINCREMENT,"+ COL_JOUR
             + " TEXT NOT NULL, " + COL_MOIS + " TEXT NOT NULL, " + COL_TEMPERATURE6H + " TEXT NOT NULL," +
             COL_TEMPERATURE12H + " TEXT NOT NULL, " + COL_TEMPERATURE18H + "TEXT NOT NULL," + COL_TEMPERATURE24H + "TEXT NOT NULL);";
+
+    private static final String CREATE_INDEXRELEVE = "CREATE INDEX I_FK_RELEVE_LAC ON RELEVE ("+COL_FK_IDLAC+" ASC );";
+    private static final String ALTER_TABLERELEVE = "ALTER TABLE "+TABLE_RELEVE+" ADD FOREIGN KEY FK_RELEVE_LAC ("+COL_FK_IDLAC+") " +
+            "REFERENCES " + TABLE_LAC + "("+COL_IDLAC+");";
 
     //constructeur paramétré
     public CreateBDD(Context context, String name, SQLiteDatabase.CursorFactory
