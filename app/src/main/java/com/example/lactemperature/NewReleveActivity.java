@@ -33,14 +33,18 @@ public class NewReleveActivity extends Activity {
         date = findViewById(R.id.editTextDate);
 
         final String[] uneHeure = new String[1];
-
+        //Gestion des boutons enregistrer et annuler
+        Button btnValider = (Button) findViewById(R.id.btnValiderNewR);
         Button btnAnnuler = (Button) findViewById(R.id.btnAnnulerNewR);
+        final DAOBdd releveBdd = new DAOBdd(this);
+        releveBdd.open();
         //on va créer un écouteur pour un groupe de boutons
         View.OnClickListener ecouteur = new View.OnClickListener() {
             //on implémente la méthode onclick
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
+
                     case R.id.btnAnnulerNewR:
                         finish();
                         break;
