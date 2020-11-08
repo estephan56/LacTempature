@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DAOBdd {
-    static final int VERSION_BDD =1;
+    static final int VERSION_BDD = 5;
     private static final String NOM_BDD = "lacTemperature.db";
     //table Lac
     static final String TABLE_LAC = "tlac";
@@ -27,7 +27,7 @@ public class DAOBdd {
     static final int NUM_COL_IDRELEVE = 0;
     static final String COL_JOUR = "Jour";
     static final int NUM_COL_JOUR = 1;
-    static final String COL_MOIS = "MOIS";
+    static final String COL_MOIS = "Mois";
     static final int NUM_COL_MOIS = 2;
     static final String COL_TEMPERATURE6H = "Temperature6h";
     static final int NUM_COL_TEMPERATURE6H = 3;
@@ -37,6 +37,8 @@ public class DAOBdd {
     static final int NUM_COL_TEMPERATURE18H = 5;
     static final String COL_TEMPERATURE24H = "Temperature24h";
     static final int NUM_COL_TEMPERATURE24H = 6;
+    static  final String COL_FK_IDLAC = "id_lac";
+    static final int NUM_COL_FK_IDLAC = 7;
     private CreateBDD tableCourante;
     private Context context;
     private SQLiteDatabase db;
@@ -68,6 +70,7 @@ public class DAOBdd {
         values.put(COL_TEMPERATURE12H, unReleve.getTemperature12h());
         values.put(COL_TEMPERATURE18H, unReleve.getTemperature18h());
         values.put(COL_TEMPERATURE24H, unReleve.getTemperature24h());
+        values.put(COL_FK_IDLAC, unReleve.getId_lac());
         //on insère l'objet dans la BDD via le ContentValues
         return db.insert(TABLE_RELEVE, null, values);
     }
@@ -77,7 +80,7 @@ public class DAOBdd {
             return null;
         //Sinon
         c.moveToFirst(); //on se place sur le premier élément
-        Releve unReleve = new Releve(null,null,null,null, null, null); //On créé un relevé
+        Releve unReleve = new Releve(null,null,null,null, null, null, null); //On créé un relevé
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
         unReleve.setJour(c.getString(NUM_COL_JOUR));
         unReleve.setMois(c.getString(NUM_COL_MOIS));
@@ -85,16 +88,17 @@ public class DAOBdd {
         unReleve.setTemperature12h(c.getString(NUM_COL_TEMPERATURE12H));
         unReleve.setTemperature18h(c.getString(NUM_COL_TEMPERATURE18H));
         unReleve.setTemperature24h(c.getString(NUM_COL_TEMPERATURE24H));
+        unReleve.setId_lac(c.getString(NUM_COL_FK_IDLAC));
         c.close(); //On ferme le cursor
         return unReleve; //On retourne le relevé
     }
     public Releve getReleveWithJour(String jour){
         //Récupère dans un Cursor les valeurs correspondant à un relevé grâce au jour
         Cursor c = db.query(TABLE_RELEVE, new String[]
-                        {COL_IDRELEVE, COL_JOUR, COL_MOIS, COL_TEMPERATURE6H, COL_TEMPERATURE12H, COL_TEMPERATURE18H, COL_TEMPERATURE24H}, COL_JOUR + " = \"" + jour +"\"", null, null, null, null);
+                        {COL_IDRELEVE, COL_JOUR, COL_MOIS, COL_TEMPERATURE6H, COL_TEMPERATURE12H, COL_TEMPERATURE18H, COL_TEMPERATURE24H, COL_FK_IDLAC}, COL_JOUR + " = \"" + jour +"\"", null, null, null, null);
         return cursorToClient(c);
     }
-    public Cursor getDataClient(){
+    public Cursor getDataReleve(){
         return db.rawQuery("SELECT * FROM treleve", null);
     }
 
@@ -151,5 +155,27 @@ public class DAOBdd {
         db.execSQL("delete from "+ TABLE_LAC);
         db.close();
 
+    }
+
+    public List<String> getGpsByNomLac(String lac) {
+        List<String> listeNomLacs = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT " + COL_COORDONNEESLAT + " FROM tlac WHERE nom = "+"'"+lac+"'", null);
+        if(c.moveToFirst()) {
+            do {
+                listeNomLacs.add(c.getString(0));
+            } while (c.moveToNext());
+        }
+        Cursor c2 = db.rawQuery("SELECT " + COL_COORDONNEESLONG + " FROM tlac WHERE nom = "+"'"+lac+"'", null);
+        if(c2.moveToFirst()) {
+            do {
+                listeNomLacs.add(c2.getString(0));
+            } while (c2.moveToNext());
+        }
+
+
+        c.close();
+        c2.close();
+        db.close();
+        return listeNomLacs;
     }
 }

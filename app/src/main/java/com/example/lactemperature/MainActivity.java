@@ -20,9 +20,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnListeReleve = (Button) findViewById(R.id.btnListeReleve);
         Button btnAfficheReleve = (Button) findViewById(R.id.btnAffichageReleve);
 
-
         //deleteLacs();
-        //remplirTables();
+        remplirLacs();
 
 
         //on va créer un écouteur pour un groupe de boutons
@@ -52,19 +51,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void remplirTables() {
+    public void remplirReleves() {
+        DAOBdd daoBdd = new DAOBdd(this);
+        Releve releve1 = new Releve("15", "10", "17", "21", "22", "19", "0");
+        //on ouvre la base de données
+        daoBdd.open();
+        //on insère le relevé
+        daoBdd.insererReleve(releve1);
+        //le curseur pour afficher le nombre de relevés dans la base
+        Cursor c1 = daoBdd.getDataReleve();
+        Toast.makeText(getApplicationContext(), " il y a " + String.valueOf(c1.getCount()) + " relevés ", Toast.LENGTH_LONG).show();
+    }
+
+    public void remplirLacs(){
         DAOBdd daoBdd = new DAOBdd(this);
         Lac lac1 = new Lac("Lac Léman", "46.455743", "6.562420");
         Lac lac2 = new Lac("Lac Bled", "46.363068", "14.093823");
         //on ouvre la base de données
         daoBdd.open();
-        //on insère client1 puis client2
+        //on insère lac1 puis lac2
         daoBdd.insererLac(lac1);
         daoBdd.insererLac(lac2);
-        //le curseur pour afficher le nombre de clients dans la base
+        //le curseur pour afficher le nombre de lacs dans la base
         Cursor c = daoBdd.getDataLac();
         //Toast.makeText(getApplicationContext(), " il y a " + String.valueOf(c.getCount()) + " lacs ", Toast.LENGTH_LONG).show();
-
     }
 
     public void deleteLacs() {

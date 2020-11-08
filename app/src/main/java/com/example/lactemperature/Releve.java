@@ -7,14 +7,16 @@ public class Releve {
     protected String temperature12h;
     protected String temperature18h;
     protected String temperature24h;
+    protected String id_lac;
 
-    public Releve(String jour, String mois, String temperature6h, String temperature12h, String temperature18h, String temperature24h) {
+    public Releve(String jour, String mois, String temperature6h, String temperature12h, String temperature18h, String temperature24h, String id_lac) {
         this.jour = jour;
         this.mois = mois;
         this.temperature6h = temperature6h;
         this.temperature12h = temperature12h;
         this.temperature18h = temperature18h;
         this.temperature24h = temperature24h;
+        this.id_lac = id_lac;
     }
 
     public String getJour() {
@@ -63,5 +65,13 @@ public class Releve {
 
     public void setTemperature24h(String temperature24h) {
         this.temperature24h = temperature24h;
+    }
+
+    public String getId_lac() {
+        return id_lac;
+    }
+
+    public void setId_lac(String id_lac) {
+        this.id_lac = id_lac;
     }
 }
