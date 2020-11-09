@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -67,8 +69,8 @@ public class ListeReleveActivity extends Activity {
 
         //gestion de la liste déroulante des mois
         final Spinner spinnerListeChoixMois = (Spinner) findViewById(R.id.spinnerListeChoixMois);
-        String[] lesHeures = {"Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"};
-        ArrayAdapter<String> dataAdapterR2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lesHeures);
+        String[] lesMois = {"Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"};
+        ArrayAdapter<String> dataAdapterR2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lesMois);
         dataAdapterR2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerListeChoixMois.setAdapter(dataAdapterR2);
         spinnerListeChoixMois.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -82,6 +84,17 @@ public class ListeReleveActivity extends Activity {
 
             }
         });
+
+        String[] lesHeures = {"6h", "12h", "18h", "24h"};
+
+        final ListView ListViewListeR2 = (ListView) findViewById(R.id.ListViewListeR2);
+        // https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lesHeures);
+        ListViewListeR2.setAdapter(itemsAdapter);
+
+
+
+
 
     }
 }

@@ -80,17 +80,35 @@
             android:layout_weight="1"
             android:text="@string/TextViewHeure" />
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/linearLayout2"
+    <LinearLayout
+        android:id="@+id/linearLayout99"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="25dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout0"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
 
-    </ListView>
+        <ListView
+            android:id="@+id/ListViewListeR1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+
+        </ListView>
+        <ListView
+            android:id="@+id/ListViewListeR2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+
+        </ListView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_marginHorizontal="10dp"
@@ -98,7 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout99"
         android:layout_marginTop="175dp">
 
         <Button

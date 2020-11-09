@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,7 +42,12 @@ public class AfficheReleverActivity extends Activity {
 
 
         Button btnRetour = (Button) findViewById(R.id.btnRetourAfficheReleve);
-        //on va créer un écouteur pour un groupe de boutons
+        Button btnCelsiusAfficheReleve = (Button) findViewById(R.id.btnCelsiusAfficheReleve);
+        Button btnFahrenheitAfficheReleve = (Button) findViewById(R.id.btnFahrenheitAfficheReleve);
+
+        final TextView textViewAfficheTemp = (TextView) findViewById(R.id.textViewAfficheTemp);
+
+            //on va créer un écouteur pour un groupe de boutons
         View.OnClickListener ecouteur = new View.OnClickListener() {
             //on implémente la méthode onclick
             @Override
@@ -64,11 +70,20 @@ public class AfficheReleverActivity extends Activity {
                                 }, year, month, dayOfMonth);
                         //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
                         datePickerDialog.show();
+                        break;
+                    case R.id.btnCelsiusAfficheReleve:
+                        textViewAfficheTemp.setText("Température (C°)");
+                        break;
+                    case R.id.btnFahrenheitAfficheReleve:
+                        textViewAfficheTemp.setText("Température (F°)");
+                        break;
                 }
             }
         };
         selectDate.setOnClickListener(ecouteur);
         btnRetour.setOnClickListener(ecouteur);
+        btnCelsiusAfficheReleve.setOnClickListener(ecouteur);
+        btnFahrenheitAfficheReleve.setOnClickListener(ecouteur);
 
 
         //gestion de la liste déroulante des lacs
@@ -79,6 +94,7 @@ public class AfficheReleverActivity extends Activity {
         daoBdd.open();
         // On récupère le nom de tous les lacs
         List lesLacs = daoBdd.getAllNomLac();
+        List lesRrrrr = daoBdd.getAllReleveByJour("09", "1");
         daoBdd.close();
 
         ArrayAdapter<String> dataAdapterLac = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lesLacs);
@@ -94,6 +110,25 @@ public class AfficheReleverActivity extends Activity {
 
             }
         });
+
+        String[] lesHeures = {"6h", "12h", "18h", "24h"};
+
+        final ListView ListViewAfficherR2 = (ListView) findViewById(R.id.ListViewAfficherR2);
+        // https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lesHeures);
+        ListViewAfficherR2.setAdapter(itemsAdapter);
+
+
+
+
+        Toast.makeText(AfficheReleverActivity.this, lesRrrrr.toString(), Toast.LENGTH_SHORT).show();
+
+        final ListView ListViewAfficherR = (ListView) findViewById(R.id.ListViewAfficherR);
+        ArrayAdapter<String> itemsAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lesRrrrr);
+        ListViewAfficherR.setAdapter(itemsAdapter2);
+
+
+
 
 
 

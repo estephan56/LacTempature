@@ -98,6 +98,43 @@ public class DAOBdd {
                         {COL_IDRELEVE, COL_JOUR, COL_MOIS, COL_TEMPERATURE6H, COL_TEMPERATURE12H, COL_TEMPERATURE18H, COL_TEMPERATURE24H, COL_FK_IDLAC}, COL_JOUR + " LIKE \"" + jour +"\"", null, null, null, null);
         return cursorToReleve(c);
     }
+
+    public List<String> getAllReleveByJour(String jour, String id_lac){
+        List<String> listeReleve = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac, null);
+        if(c.moveToFirst()) {
+            do {
+                if (!c.isNull(3)) {
+                    listeReleve.add(c.getString(3));
+                } else if (!c.isNull(4)) {
+                    listeReleve.add(c.getString(4));
+                } else if (!c.isNull(5)) {
+                    listeReleve.add(c.getString(5));
+                } else if (!c.isNull(6)){
+                    listeReleve.add(c.getString(6));
+                }
+
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return listeReleve;
+    }
+
+    public List<String> getReleve(String jour, String id_lac){
+        List<String> listeReleve = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac, null);
+        if(c.moveToFirst()) {
+                listeReleve.add(c.getString(0));
+                listeReleve.add(c.getString(1));
+                listeReleve.add(c.getString(2));
+                listeReleve.add(c.getString(3));
+        }
+        c.close();
+        db.close();
+        return listeReleve;
+    }
+
     public Cursor getDataReleve(){
         return db.rawQuery("SELECT * FROM treleve", null);
     }
@@ -147,7 +184,7 @@ public class DAOBdd {
             } while (c.moveToNext());
         }
         c.close();
-        db.close();
+        //db.close();
         return listeNomLacs;
     }
 
