@@ -68,17 +68,22 @@ public class NewReleveActivity extends Activity {
                         Releve releve;
                         // Ajout dans la bdd en fonction de l'heure
                         if (uneHeure[0] == "6h") {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), temp.getText().toString(), null, null,null, "0");
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), temp.getText().toString(), null, null,null, releveBdd.getIdByNomLac(unLac[0]).get(0));
                         } else if (uneHeure[0] == "12h") {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, temp.getText().toString(), null,null, "0");
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, temp.getText().toString(), null,null, releveBdd.getIdByNomLac(unLac[0]).get(0));
                         } else if (uneHeure[0] == "18h") {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, temp.getText().toString(),null, "0");
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, temp.getText().toString(),null, releveBdd.getIdByNomLac(unLac[0]).get(0));
                         } else {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, null,temp.getText().toString(), "0");
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, null,temp.getText().toString(), releveBdd.getIdByNomLac(unLac[0]).get(0));
                         }
                         releveBdd.insererReleve(releve);
-                        releveBdd.close();
+                        //releveBdd.close();
                         finish();
+                        Toast.makeText(NewReleveActivity.this, "Le relevé a bien été enregistré.", Toast.LENGTH_SHORT).show();
+                        Cursor c2 = releveBdd.getDataReleve();
+                        Toast.makeText(getApplicationContext(), "Il y a " + String.valueOf(c2.getCount()) +
+                                " relevés dans la table.", Toast.LENGTH_LONG).show();
+                        releveBdd.close();
                         break;
 
                     case R.id.btnDateNewR:
@@ -125,13 +130,15 @@ public class NewReleveActivity extends Activity {
         //gestion de la liste déroulante des lacs
         final Spinner spinnerNewChoixLac = (Spinner) findViewById(R.id.spinnerNewChoixLac);
         //Création d'une instance de la classe DAObdd
-        DAOBdd daoBdd = new DAOBdd(this);
+        final DAOBdd daoBdd = new DAOBdd(this);
         //On ouvre la table
         daoBdd.open();
         //on récupère tous les lacs via le curseur
         Cursor c = daoBdd.getDataLac();
         //Toast.makeText(getApplicationContext(), "il y a " + String.valueOf(c.getCount()) +
         //        " lacs dans la table", Toast.LENGTH_LONG).show();
+
+
 
         // On récupère le nom de tous les lacs
         List lesLacs = daoBdd.getAllNomLac();
@@ -144,6 +151,11 @@ public class NewReleveActivity extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 unLac[0] = String.valueOf(spinnerNewChoixLac.getSelectedItem());
                 //Toast.makeText(NewReleveActivity.this, "Vous avez choisi le lac : " + unLac[0], Toast.LENGTH_SHORT).show();
+                daoBdd.open();
+                final TextView textViewCoordGps = (TextView) findViewById(R.id.textViewCoordGps);
+                List ll = daoBdd.getGpsByNomLac(unLac[0]);
+                textViewCoordGps.setText("Coordonnées :\n"+ll.get(0).toString()+", "+ll.get(1).toString());
+                daoBdd.close();
             }
 
             @Override
@@ -151,13 +163,10 @@ public class NewReleveActivity extends Activity {
 
             }
         });
-
-
-        daoBdd.open();
-        final TextView textViewCoordGps = (TextView) findViewById(R.id.textViewCoordGps);
-        List ll = daoBdd.getGpsByNomLac("Lac Léman");
-        textViewCoordGps.setText(ll.get(0).toString()+" "+ll.get(1).toString());
-
+        // TEST
+        //final TextView textViewCoordGps = (TextView) findViewById(R.id.textViewCoordGps);
+        //List ll = releveBdd.getIdByNomLac(unLac[0]);
+        //textViewCoordGps.setText(ll.get(0).toString());
 
     }
 }

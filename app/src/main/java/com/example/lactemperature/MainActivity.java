@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnAfficheReleve = (Button) findViewById(R.id.btnAffichageReleve);
 
         //deleteLacs();
-        remplirLacs();
+        //remplirLacs();
 
 
         //on va créer un écouteur pour un groupe de boutons

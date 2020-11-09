@@ -87,7 +87,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/linearLayout2"
+        android:id="@+id/ListeViewAfficherR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -103,7 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/ListeViewAfficherR"
         android:layout_marginTop="140dp">
 
         <Button

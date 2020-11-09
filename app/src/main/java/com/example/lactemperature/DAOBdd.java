@@ -74,7 +74,7 @@ public class DAOBdd {
         //on insère l'objet dans la BDD via le ContentValues
         return db.insert(TABLE_RELEVE, null, values);
     }
-    private Releve cursorToClient(Cursor c){ //Cette méthode permet de convertir un cursor en un relevé
+    private Releve cursorToReleve(Cursor c){ //Cette méthode permet de convertir un cursor en un relevé
         //si aucun élément n'a été retourné dans la requête, on renvoie null
         if (c.getCount() == 0)
             return null;
@@ -95,8 +95,8 @@ public class DAOBdd {
     public Releve getReleveWithJour(String jour){
         //Récupère dans un Cursor les valeurs correspondant à un relevé grâce au jour
         Cursor c = db.query(TABLE_RELEVE, new String[]
-                        {COL_IDRELEVE, COL_JOUR, COL_MOIS, COL_TEMPERATURE6H, COL_TEMPERATURE12H, COL_TEMPERATURE18H, COL_TEMPERATURE24H, COL_FK_IDLAC}, COL_JOUR + " = \"" + jour +"\"", null, null, null, null);
-        return cursorToClient(c);
+                        {COL_IDRELEVE, COL_JOUR, COL_MOIS, COL_TEMPERATURE6H, COL_TEMPERATURE12H, COL_TEMPERATURE18H, COL_TEMPERATURE24H, COL_FK_IDLAC}, COL_JOUR + " LIKE \"" + jour +"\"", null, null, null, null);
+        return cursorToReleve(c);
     }
     public Cursor getDataReleve(){
         return db.rawQuery("SELECT * FROM treleve", null);
@@ -113,7 +113,7 @@ public class DAOBdd {
         //on insère l'objet dans la BDD via le ContentValues
         return db.insert(TABLE_LAC, null, values);
     }
-    private Lac cursorToReleve(Cursor c){ //Cette méthode permet de convertir un cursor en un lac
+    private Lac cursorToLac(Cursor c){ //Cette méthode permet de convertir un cursor en un lac
         //si aucun élément n'a été retourné dans la requête, on renvoie null
         if (c.getCount() == 0)
             return null;
@@ -132,7 +132,7 @@ public class DAOBdd {
         Cursor c = db.query(TABLE_LAC, new String[] {COL_IDLAC,COL_NOM,
                         COL_COORDONNEESLAT, COL_COORDONNEESLONG}, COL_NOM + " = \"" + nom +"\"", null, null,
                 null, null);
-        return cursorToReleve(c);
+        return cursorToLac(c);
     }
     public Cursor getDataLac(){
         return db.rawQuery("SELECT * FROM tlac", null);
@@ -161,21 +161,26 @@ public class DAOBdd {
         List<String> listeNomLacs = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT " + COL_COORDONNEESLAT + " FROM tlac WHERE nom = "+"'"+lac+"'", null);
         if(c.moveToFirst()) {
-            do {
-                listeNomLacs.add(c.getString(0));
-            } while (c.moveToNext());
+            listeNomLacs.add(c.getString(0));
         }
         Cursor c2 = db.rawQuery("SELECT " + COL_COORDONNEESLONG + " FROM tlac WHERE nom = "+"'"+lac+"'", null);
         if(c2.moveToFirst()) {
-            do {
-                listeNomLacs.add(c2.getString(0));
-            } while (c2.moveToNext());
+            listeNomLacs.add(c2.getString(0));
         }
-
-
         c.close();
         c2.close();
-        db.close();
+        //db.close();
         return listeNomLacs;
     }
+
+    public List<String> getIdByNomLac(String nomLac) {
+        List<String> listeId = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM tlac WHERE nom = "+"'"+nomLac+"'", null);
+        if(c.moveToFirst()) {
+            listeId.add(c.getString(0));
+        }
+        c.close();
+        return listeId;
+    }
+
 }
