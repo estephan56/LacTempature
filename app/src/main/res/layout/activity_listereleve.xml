@@ -117,7 +117,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout99"
-        android:layout_marginTop="175dp">
+        android:layout_marginTop="0dp">
 
         <Button
             style="@style/styleBouton"

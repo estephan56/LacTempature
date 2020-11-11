@@ -101,17 +101,20 @@ public class DAOBdd {
 
     public List<String> getAllReleveByJour(String jour, String id_lac){
         List<String> listeReleve = new ArrayList<>();
+        for (int i=0;i < 4; i++){
+            listeReleve.add("");
+        }
         Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac, null);
         if(c.moveToFirst()) {
             do {
                 if (!c.isNull(3)) {
-                    listeReleve.add(c.getString(3));
+                    listeReleve.set(0, c.getString(3));
                 } else if (!c.isNull(4)) {
-                    listeReleve.add(c.getString(4));
+                    listeReleve.set(1, c.getString(4));
                 } else if (!c.isNull(5)) {
-                    listeReleve.add(c.getString(5));
+                    listeReleve.set(2, c.getString(5));
                 } else if (!c.isNull(6)){
-                    listeReleve.add(c.getString(6));
+                    listeReleve.set(3, c.getString(6));
                 }
 
             } while (c.moveToNext());

@@ -89,7 +89,14 @@ public class AfficheReleverActivity extends Activity {
                         }
                         // On récupère la température des relevés en fonction de la date du jour
                         lesRrrrr[0] = daoBdd2.getAllReleveByJour(date1.substring(0, 2), daoBdd2.getIdByNomLac(unLac[0]).get(0));
-                        Toast.makeText(AfficheReleverActivity.this, "Il y a "+lesRrrrr[0].size()+" relevés pour ce jour.", Toast.LENGTH_SHORT).show();
+                        // On affiche combien il y a de relevés pour ce jour
+                        int compte=0;
+                        for (Object obj : lesRrrrr[0]){
+                            if (obj.toString().length() > 0) {
+                                compte++;
+                            }
+                        }
+                        Toast.makeText(AfficheReleverActivity.this, "Il y a "+compte+" relevés pour ce jour.", Toast.LENGTH_SHORT).show();
 
                         // On affiche ces températures dans la ListView
                         ArrayAdapter<String> itemsAdapter2 = new ArrayAdapter<String>(AfficheReleverActivity.this, android.R.layout.simple_list_item_1, lesRrrrr[0]);
@@ -99,8 +106,8 @@ public class AfficheReleverActivity extends Activity {
                     case R.id.btnFahrenheitAfficheReleve:
                         // On déclare une List lesDegF qui contient nos températures depuis lesRrrrrr
                         List lesDegF = new ArrayList();
-                        for (int i = 0; i < lesRrrrr[0].size(); i++) {
-                            lesDegF.add(lesRrrrr[0].get(i));
+                        for (Object obj : lesRrrrr[0]) {
+                            lesDegF.add(obj.toString());
                         }
 
                         // Pour chaque température dans la liste, si celle-ci n'est pas vide, on la convertie en fahreinheit

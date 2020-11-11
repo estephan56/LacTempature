@@ -85,8 +85,7 @@ public class NewReleveActivity extends Activity {
                         // Affichage d'un résumé
                         Toast.makeText(NewReleveActivity.this, "Le relevé a bien été enregistré.", Toast.LENGTH_SHORT).show();
                         Cursor c2 = releveBdd.getDataReleve();
-                        Toast.makeText(getApplicationContext(), "Il y a " + String.valueOf(c2.getCount()) +
-                                " relevés dans la table.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Il y a " + String.valueOf(c2.getCount()) + " relevés dans la table.", Toast.LENGTH_LONG).show();
                         releveBdd.close();
                         break;
 
