@@ -43,8 +43,11 @@ public class NewReleveActivity extends Activity {
         //Gestion des boutons enregistrer et annuler
         Button btnValider = (Button) findViewById(R.id.btnValiderNewR);
         Button btnAnnuler = (Button) findViewById(R.id.btnAnnulerNewR);
+
+        // Création d'une instance de la classe releveBdd
         final DAOBdd releveBdd = new DAOBdd(this);
         releveBdd.open();
+
         // récupération des données saisies
         final EditText temp = findViewById(R.id.editTextNumberTemperature);
 
@@ -59,14 +62,14 @@ public class NewReleveActivity extends Activity {
                         break;
                     case R.id.btnValiderNewR:
                         String date1;
-                        // Si la date fait moins de 10 caractères on ajoute un 0 devant le jour
+                        // Si la date fait moins de 10 caractères on ajoute un 0 devant le jour (Ex 8 > 08)
                         if (date.getText().toString().length() < 10){
                             date1 = "0"+date.getText().toString();
                         } else {
                             date1 = date.getText().toString();
                         }
                         Releve releve;
-                        // Ajout dans la bdd en fonction de l'heure
+                        // Ajout dans la bdd en fonction de l'heure, récupération de l'id du lac en fonction du nom
                         if (uneHeure[0] == "6h") {
                             releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), temp.getText().toString(), null, null,null, releveBdd.getIdByNomLac(unLac[0]).get(0));
                         } else if (uneHeure[0] == "12h") {
@@ -79,6 +82,7 @@ public class NewReleveActivity extends Activity {
                         releveBdd.insererReleve(releve);
                         //releveBdd.close();
                         finish();
+                        // Affichage d'un résumé
                         Toast.makeText(NewReleveActivity.this, "Le relevé a bien été enregistré.", Toast.LENGTH_SHORT).show();
                         Cursor c2 = releveBdd.getDataReleve();
                         Toast.makeText(getApplicationContext(), "Il y a " + String.valueOf(c2.getCount()) +
@@ -134,7 +138,7 @@ public class NewReleveActivity extends Activity {
         //On ouvre la table
         daoBdd.open();
         //on récupère tous les lacs via le curseur
-        Cursor c = daoBdd.getDataLac();
+        //Cursor c = daoBdd.getDataLac();
         //Toast.makeText(getApplicationContext(), "il y a " + String.valueOf(c.getCount()) +
         //        " lacs dans la table", Toast.LENGTH_LONG).show();
 
@@ -152,7 +156,9 @@ public class NewReleveActivity extends Activity {
                 unLac[0] = String.valueOf(spinnerNewChoixLac.getSelectedItem());
                 //Toast.makeText(NewReleveActivity.this, "Vous avez choisi le lac : " + unLac[0], Toast.LENGTH_SHORT).show();
                 daoBdd.open();
+                // Modification du TextView pour les coordonnées GPS
                 final TextView textViewCoordGps = (TextView) findViewById(R.id.textViewCoordGps);
+                // Les coordonnées sont enregistrées dans une liste ll en fonction du nom du lac
                 List ll = daoBdd.getGpsByNomLac(unLac[0]);
                 textViewCoordGps.setText("Coordonnées :\n"+ll.get(0).toString()+", "+ll.get(1).toString());
                 daoBdd.close();
@@ -163,6 +169,14 @@ public class NewReleveActivity extends Activity {
 
             }
         });
+
+        // La date du jour est présélectionnée au lancement
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        date.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+
         // TEST
         //final TextView textViewCoordGps = (TextView) findViewById(R.id.textViewCoordGps);
         //List ll = releveBdd.getIdByNomLac(unLac[0]);

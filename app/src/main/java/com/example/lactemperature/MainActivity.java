@@ -20,8 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Button btnListeReleve = (Button) findViewById(R.id.btnListeReleve);
         Button btnAfficheReleve = (Button) findViewById(R.id.btnAffichageReleve);
 
-        //deleteLacs();
-        remplirLacs();
+        //deleteTables();
+        //remplirLacs();
+        //remplirReleves();
 
 
         //on va créer un écouteur pour un groupe de boutons
@@ -51,18 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void remplirReleves() {
-        DAOBdd daoBdd = new DAOBdd(this);
-        Releve releve1 = new Releve("15", "10", "17", "21", "22", "19", "0");
-        //on ouvre la base de données
-        daoBdd.open();
-        //on insère le relevé
-        daoBdd.insererReleve(releve1);
-        //le curseur pour afficher le nombre de relevés dans la base
-        Cursor c1 = daoBdd.getDataReleve();
-        Toast.makeText(getApplicationContext(), " il y a " + String.valueOf(c1.getCount()) + " relevés ", Toast.LENGTH_LONG).show();
-    }
-
     public void remplirLacs(){
         DAOBdd daoBdd = new DAOBdd(this);
         Lac lac1 = new Lac("Lac Léman", "46.455743", "6.562420");
@@ -77,10 +66,24 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(), " il y a " + String.valueOf(c.getCount()) + " lacs ", Toast.LENGTH_LONG).show();
     }
 
-    public void deleteLacs() {
+    public void remplirReleves() {
+        DAOBdd daoBdd = new DAOBdd(this);
+        Releve releve1 = new Releve("09", "10", "17", "21", "22", "19", "1");
+        //on ouvre la base de données
+        daoBdd.open();
+        //on insère le relevé
+        daoBdd.insererReleve(releve1);
+        //le curseur pour afficher le nombre de relevés dans la base
+        Cursor c1 = daoBdd.getDataReleve();
+        Toast.makeText(getApplicationContext(), " il y a " + String.valueOf(c1.getCount()) + " relevés ", Toast.LENGTH_LONG).show();
+    }
+
+    public void deleteTables() {
         DAOBdd daoBdd = new DAOBdd(this);
         daoBdd.open();
         daoBdd.deleteLacs();
+        daoBdd.open();
+        daoBdd.deleteReleves();
     }
 
 }

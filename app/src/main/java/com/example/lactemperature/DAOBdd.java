@@ -115,9 +115,10 @@ public class DAOBdd {
                 }
 
             } while (c.moveToNext());
+
         }
         c.close();
-        db.close();
+        //db.close();
         return listeReleve;
     }
 
@@ -125,11 +126,31 @@ public class DAOBdd {
         List<String> listeReleve = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac, null);
         if(c.moveToFirst()) {
-                listeReleve.add(c.getString(0));
-                listeReleve.add(c.getString(1));
-                listeReleve.add(c.getString(2));
-                listeReleve.add(c.getString(3));
+            listeReleve.add(c.getString(0)+c.getColumnName(0));
+            listeReleve.add(c.getString(1)+c.getColumnName(1));
+            listeReleve.add(c.getString(2)+c.getColumnName(2));
+            listeReleve.add(c.getString(3)+c.getColumnName(3));
+            listeReleve.add(c.getString(7)+c.getColumnName(7));
         }
+        c.close();
+        db.close();
+        return listeReleve;
+    }
+
+    public List<String> getReleveTest(String jour, String id_lac){
+        List<String> listeReleve = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM treleve", null);
+        if(c.moveToFirst()) {
+            listeReleve.add(c.getString(0)+c.getColumnName(0));
+            listeReleve.add(c.getString(1)+c.getColumnName(1));
+            listeReleve.add(c.getString(2)+c.getColumnName(2));
+            listeReleve.add(c.getString(3)+c.getColumnName(3));
+            listeReleve.add(c.getString(7)+c.getColumnName(7));
+        }
+        //listeReleve.add(c.getColumnName(0)+c.getColumnName(1)+c.getColumnName(2)+c.getColumnName(3)+
+        //        c.getColumnName(4)+c.getColumnName(5)+c.getColumnName(6)+c.getColumnName(7));
+        //listeReleve.add(c.getString(0)+c.getString(1)+c.getString(2)+c.getString(3)+
+        //        c.getString(4)+c.getString(5)+c.getString(6)+"test:"+c.getString(7));
         c.close();
         db.close();
         return listeReleve;
@@ -189,9 +210,14 @@ public class DAOBdd {
     }
 
     public void deleteLacs(){
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + TABLE_LAC + "'");
         db.execSQL("delete from "+ TABLE_LAC);
         db.close();
-
+    }
+    public void deleteReleves(){
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + TABLE_RELEVE + "'");
+        db.execSQL("delete from "+ TABLE_RELEVE);
+        db.close();
     }
 
     public List<String> getGpsByNomLac(String lac) {

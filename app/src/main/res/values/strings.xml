@@ -18,5 +18,5 @@
     <string name="editTextDate">Date</string>
     <string name="editTextNbTemp">Température (C°)</string>
     <string name="CoordGps">Coordonées GPS</string>
-    <string name="TextViewTemp">Température</string>
+    <string name="TextViewTemp">Température (C°)</string>
 </resources>
