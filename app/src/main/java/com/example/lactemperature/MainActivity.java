@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Button btnListeReleve = (Button) findViewById(R.id.btnListeReleve);
         Button btnAfficheReleve = (Button) findViewById(R.id.btnAffichageReleve);
 
-        //deleteReleves();
+        deleteReleves();
         //remplirLacs();
-        //remplirReleves();
+        remplirReleves();
 
 
         //on va créer un écouteur pour un groupe de boutons
@@ -68,15 +68,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void remplirReleves() {
         DAOBdd daoBdd = new DAOBdd(this);
-        Releve releve1 = new Releve("09", "10", "", "21", "", "", "1");
-        Releve releve2 = new Releve("09", "10", "7", "", "", "", "1");
-        Releve releve3 = new Releve("09", "10", "", "", "", "14", "1");
+        Releve releve1 = new Releve("09", "10", "7", null, null, null, "1");
+        Releve releve2 = new Releve("09", "10", null, "14", null, null, "1");
+        Releve releve3 = new Releve("09", "10", null, null, "16", null, "1");
+        Releve releve4 = new Releve("09", "10", null, null, null, "9", "1");
         //on ouvre la base de données
         daoBdd.open();
         //on insère les relevés
         daoBdd.insererReleve(releve1);
         daoBdd.insererReleve(releve2);
         daoBdd.insererReleve(releve3);
+        daoBdd.insererReleve(releve4);
         //le curseur pour afficher le nombre de relevés dans la base
         Cursor c1 = daoBdd.getDataReleve();
         Toast.makeText(getApplicationContext(), " il y a " + String.valueOf(c1.getCount()) + " relevés ", Toast.LENGTH_LONG).show();

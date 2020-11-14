@@ -13,7 +13,7 @@
     <string name="StringNewReleve">Nouveau relevé</string>
     <string name="StringChoixLac">Choix du lac</string>
     <string name="StringChoixMois">Choix du mois</string>
-    <string name="TextViewMoyenneTemp">Moyenne température C°/F°</string>
+    <string name="TextViewMoyenneTemp">Moyenne température (C°)</string>
     <string name="TextViewHeure">Heure</string>
     <string name="editTextDate">Date</string>
     <string name="editTextNbTemp">Température (C°)</string>

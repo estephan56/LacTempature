@@ -61,14 +61,16 @@ public class NewReleveActivity extends Activity {
                         finish();
                         break;
                     case R.id.btnValiderNewR:
-                        String date1;
-                        // Si la date fait moins de 10 caractères on ajoute un 0 devant le jour (Ex 8 > 08)
-                        if (date.getText().toString().length() < 10){
-                            date1 = "0"+date.getText().toString();
-                        } else {
-                            date1 = date.getText().toString();
-                        }
                         Releve releve;
+                        String date1;
+                        date1 = date.getText().toString();
+
+                        // Message si il y n'a pas de température
+                        if (temp.getText().toString().length() < 1) {
+                            Toast.makeText(NewReleveActivity.this, "Veuillez ajouter une température", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+
                         // Ajout dans la bdd en fonction de l'heure, récupération de l'id du lac en fonction du nom
                         if (uneHeure[0] == "6h") {
                             releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), temp.getText().toString(), null, null,null, releveBdd.getIdByNomLac(unLac[0]).get(0));
@@ -98,7 +100,19 @@ public class NewReleveActivity extends Activity {
                                 new DatePickerDialog.OnDateSetListener() {
                                     @Override
                                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                        date.setText(day + "/" + (month + 1) + "/" + year);
+                                        String affiche;
+                                        // Permet d'afficher un 0 devant le jour/mois si celui-ci est inférieur à 9
+                                        if (month < 9 && day < 9) {
+                                            affiche = "0" + day + "/" + "0" + (month + 1) + "/" + year;
+                                        } else if (month < 9) {
+                                            affiche = day + "/" + "0"+(month + 1) + "/" + year;
+                                        } else if (day < 9) {
+                                            affiche = "0"+day + "/" + (month + 1) + "/" + year;
+                                        } else {
+                                            affiche = day + "/" + (month + 1) + "/" + year;
+                                        }
+                                        date.setText(affiche);
+
                                     }
                                 }, year, month, dayOfMonth);
                         //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());

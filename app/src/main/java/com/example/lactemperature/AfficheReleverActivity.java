@@ -73,7 +73,19 @@ public class AfficheReleverActivity extends Activity {
                                 new DatePickerDialog.OnDateSetListener() {
                                     @Override
                                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                        date.setText(day + "/" + (month + 1) + "/" + year);
+                                        String affiche;
+                                        // Permet d'afficher un 0 devant le jour/mois si celui-ci est inférieur à 9
+                                        if (month < 9 && day < 9) {
+                                            affiche = "0" + day + "/" + "0" + (month + 1) + "/" + year;
+                                        } else if (month < 9) {
+                                            affiche = day + "/" + "0"+(month + 1) + "/" + year;
+                                        } else if (day < 9) {
+                                            affiche = "0"+day + "/" + (month + 1) + "/" + year;
+                                        } else {
+                                            affiche = day + "/" + (month + 1) + "/" + year;
+                                        }
+                                        date.setText(affiche);
+
                                     }
                                 }, year, month, dayOfMonth);
                         //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -81,14 +93,10 @@ public class AfficheReleverActivity extends Activity {
                         break;
                     case R.id.btnCelsiusAfficheReleve:
                         String date1;
-                        // Si la date fait moins de 10 caractères on ajoute un 0 devant le jour
-                        if (date.getText().toString().length() < 10) {
-                            date1 = "0" + date.getText().toString();
-                        } else {
-                            date1 = date.getText().toString();
-                        }
+                        date1 = date.getText().toString();
+
                         // On récupère la température des relevés en fonction de la date du jour
-                        lesRrrrr[0] = daoBdd2.getAllReleveByJour(date1.substring(0, 2), daoBdd2.getIdByNomLac(unLac[0]).get(0));
+                        lesRrrrr[0] = daoBdd2.getAllReleveByJour(date1.substring(0, 2), date1.substring(3,5), daoBdd2.getIdByNomLac(unLac[0]).get(0));
                         // On affiche combien il y a de relevés pour ce jour
                         int compte=0;
                         for (Object obj : lesRrrrr[0]){

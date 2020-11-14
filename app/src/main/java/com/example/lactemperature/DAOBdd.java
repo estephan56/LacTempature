@@ -92,19 +92,13 @@ public class DAOBdd {
         c.close(); //On ferme le cursor
         return unReleve; //On retourne le relevé
     }
-    public Releve getReleveWithJour(String jour){
-        //Récupère dans un Cursor les valeurs correspondant à un relevé grâce au jour
-        Cursor c = db.query(TABLE_RELEVE, new String[]
-                        {COL_IDRELEVE, COL_JOUR, COL_MOIS, COL_TEMPERATURE6H, COL_TEMPERATURE12H, COL_TEMPERATURE18H, COL_TEMPERATURE24H, COL_FK_IDLAC}, COL_JOUR + " LIKE \"" + jour +"\"", null, null, null, null);
-        return cursorToReleve(c);
-    }
 
-    public List<String> getAllReleveByJour(String jour, String id_lac){
+    public List<String> getAllReleveByJour(String jour, String mois, String id_lac){
         List<String> listeReleve = new ArrayList<>();
         for (int i=0;i < 4; i++){
             listeReleve.add("");
         }
-        Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac, null);
+        Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac+" AND Mois = "+"'"+mois+"'", null);
         if(c.moveToFirst()) {
             do {
                 if (!c.isNull(3)) {
@@ -140,23 +134,79 @@ public class DAOBdd {
         return listeReleve;
     }
 
-    public List<String> getReleveTest(String jour, String id_lac){
+    public List<String> getReleveTest(){
         List<String> listeReleve = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT * FROM treleve", null);
-        if(c.moveToFirst()) {
-            listeReleve.add(c.getString(0)+c.getColumnName(0));
-            listeReleve.add(c.getString(1)+c.getColumnName(1));
-            listeReleve.add(c.getString(2)+c.getColumnName(2));
+        if(c.moveToLast()) {
+
+            //listeReleve.add(c.getString(0)+c.getColumnName(0));
+            //listeReleve.add(c.getString(1)+c.getColumnName(1));
+            listeReleve.add(c.getString(2)+c.getColumnName(2));/*
             listeReleve.add(c.getString(3)+c.getColumnName(3));
-            listeReleve.add(c.getString(7)+c.getColumnName(7));
+            listeReleve.add(c.getString(7)+c.getColumnName(7));*/
         }
-        //listeReleve.add(c.getColumnName(0)+c.getColumnName(1)+c.getColumnName(2)+c.getColumnName(3)+
-        //        c.getColumnName(4)+c.getColumnName(5)+c.getColumnName(6)+c.getColumnName(7));
-        //listeReleve.add(c.getString(0)+c.getString(1)+c.getString(2)+c.getString(3)+
-        //        c.getString(4)+c.getString(5)+c.getString(6)+"test:"+c.getString(7));
-        c.close();
-        db.close();
+        //c.close();
+        //db.close();
         return listeReleve;
+    }
+
+    public List<Integer> getReleveByMois(String mois, String id_lac){
+        List<Integer> listeReleve = new ArrayList<>();
+        List<Integer> listeCount = new ArrayList<>();
+        for (int i=0;i < 4; i++){
+            listeReleve.add(0);
+            listeCount.add(0);
+        }
+
+        Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Mois = "+"'"+mois+"'"+" AND id_lac = "+id_lac, null);
+        if(c.moveToFirst()) {
+            do {
+                if (!c.isNull(3)) {
+                    listeReleve.set(0, Integer.parseInt(c.getString(3))+listeReleve.get(0));
+                    listeCount.set(0, listeCount.get(0)+1);
+                } else if (!c.isNull(4)) {
+                    listeReleve.set(1, Integer.parseInt(c.getString(4))+listeReleve.get(1));
+                    listeCount.set(1, listeCount.get(1)+1);
+                } else if (!c.isNull(5)) {
+                    listeReleve.set(2, Integer.parseInt(c.getString(5))+listeReleve.get(2));
+                    listeCount.set(2, listeCount.get(2)+1);
+                } else if (!c.isNull(6)){
+                    listeReleve.set(3, Integer.parseInt(c.getString(6))+listeReleve.get(3));
+                    listeCount.set(3, listeCount.get(3)+1);
+                }
+            } while (c.moveToNext());
+        }
+        for (int i=0;i < 4; i++){
+            if (listeCount.get(i) == 0) {
+                listeCount.set(i, 1);
+            }
+            listeReleve.set(i, listeReleve.get(i)/listeCount.get(i));
+        }
+        return listeReleve;
+    }
+
+    public List<Integer> getReleveByMoisTest(String mois, String id_lac){
+        List<Integer> listeReleve = new ArrayList<>();
+        for (int i=0;i < 4; i++){
+            listeReleve.add(0);
+        }
+
+        Cursor c = db.rawQuery("SELECT Temperature6h, Temperature12h, Temperature18h, Temperature24h FROM treleve WHERE Mois = "+mois+" AND id_lac = "+id_lac, null);
+        if(c.moveToFirst()) {
+            do {
+                if (!c.isNull(0)) {
+                    listeReleve.set(0, Integer.parseInt(c.getString(0)));
+                } else if (!c.isNull(1)) {
+                    listeReleve.set(1, Integer.parseInt(c.getString(1)));
+                } else if (!c.isNull(2)) {
+                    listeReleve.set(2, Integer.parseInt(c.getString(2)));
+                } else if (!c.isNull(3)){
+                    listeReleve.set(3, Integer.parseInt(c.getString(3)));
+                }
+            } while (c.moveToNext());
+        }
+        return listeReleve;
+
     }
 
     public Cursor getDataReleve(){
