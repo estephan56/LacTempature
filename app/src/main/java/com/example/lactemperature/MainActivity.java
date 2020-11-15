@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnAfficheReleve = (Button) findViewById(R.id.btnAffichageReleve);
 
         //deleteReleves();
-        remplirLacs();
         deleteLacs();
+        remplirLacs();
         //remplirReleves();
 
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Lac lac1 = new Lac("Lac Léman", "46.455743", "6.562420");
         Lac lac2 = new Lac("Lac Bled", "46.363068", "14.093823");
         Lac lac3 = new Lac("Lac Cottepens", "45.244338","6.081331");
-        Lac lac4 = new Lac("Lac de Pavin", "45.498973", "2.886866");
+        Lac lac4 = new Lac("Lac Pavin", "45.498973", "2.886866");
         //on ouvre la base de données
         daoBdd.open();
         //on insère les lacs
