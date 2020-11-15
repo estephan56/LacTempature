@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnAfficheReleve = (Button) findViewById(R.id.btnAffichageReleve);
 
         //deleteReleves();
-        //remplirLacs();
+        remplirLacs();
+        deleteLacs();
         //remplirReleves();
 
 
@@ -56,11 +57,15 @@ public class MainActivity extends AppCompatActivity {
         DAOBdd daoBdd = new DAOBdd(this);
         Lac lac1 = new Lac("Lac Léman", "46.455743", "6.562420");
         Lac lac2 = new Lac("Lac Bled", "46.363068", "14.093823");
+        Lac lac3 = new Lac("Lac Cottepens", "45.244338","6.081331");
+        Lac lac4 = new Lac("Lac de Pavin", "45.498973", "2.886866");
         //on ouvre la base de données
         daoBdd.open();
-        //on insère lac1 puis lac2
+        //on insère les lacs
         daoBdd.insererLac(lac1);
         daoBdd.insererLac(lac2);
+        daoBdd.insererLac(lac3);
+        daoBdd.insererLac(lac4);
         //le curseur pour afficher le nombre de lacs dans la base
         Cursor c = daoBdd.getDataLac();
         //Toast.makeText(getApplicationContext(), " il y a " + String.valueOf(c.getCount()) + " lacs ", Toast.LENGTH_LONG).show();
