@@ -39,16 +39,16 @@ public class AfficheReleverActivity extends Activity {
         selectDate = findViewById(R.id.btnDate);
         date = findViewById(R.id.editTextDate2);
 
-        //Gestion des boutons retour, celsius et farhneiheit
+        // Gestion des boutons retour, celsius et farhneiheit
         Button btnRetour = (Button) findViewById(R.id.btnRetourAfficheReleve);
         Button btnCelsiusAfficheReleve = (Button) findViewById(R.id.btnCelsiusAfficheReleve);
         Button btnFahrenheitAfficheReleve = (Button) findViewById(R.id.btnFahrenheitAfficheReleve);
 
-
+        // Gestion des attributs final
         final String[] unLac = new String[1];
         final TextView textViewAfficheTemp = (TextView) findViewById(R.id.textViewAfficheTemp);
         final ListView ListViewAfficherR = (ListView) findViewById(R.id.ListViewAfficherR);
-        final List[] lesRrrrr = {new ArrayList()};
+        final List[] lesRelevesCel = {new ArrayList()};
 
         // Création d'une instance de la classe daoBdd2
         final DAOBdd daoBdd2 = new DAOBdd(this);
@@ -75,11 +75,11 @@ public class AfficheReleverActivity extends Activity {
                                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                         String affiche;
                                         // Permet d'afficher un 0 devant le jour/mois si celui-ci est inférieur à 9
-                                        if (month < 9 && day < 9) {
+                                        if (month < 9 && day < 10) {
                                             affiche = "0" + day + "/" + "0" + (month + 1) + "/" + year;
                                         } else if (month < 9) {
                                             affiche = day + "/" + "0"+(month + 1) + "/" + year;
-                                        } else if (day < 9) {
+                                        } else if (day < 10) {
                                             affiche = "0"+day + "/" + (month + 1) + "/" + year;
                                         } else {
                                             affiche = day + "/" + (month + 1) + "/" + year;
@@ -88,18 +88,20 @@ public class AfficheReleverActivity extends Activity {
 
                                     }
                                 }, year, month, dayOfMonth);
-                        //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // On ne doit pas pouvoir afficher un relevé dans le futur
                         datePickerDialog.show();
                         break;
                     case R.id.btnCelsiusAfficheReleve:
+                        // Récupère la date du textView
                         String date1;
                         date1 = date.getText().toString();
 
                         // On récupère la température des relevés en fonction de la date du jour
-                        lesRrrrr[0] = daoBdd2.getAllReleveByJour(date1.substring(0, 2), date1.substring(3,5), daoBdd2.getIdByNomLac(unLac[0]).get(0));
+                        lesRelevesCel[0] = daoBdd2.getAllReleveByJour(date1.substring(0, 2), date1.substring(3,5), daoBdd2.getIdByNomLac(unLac[0]));
+
                         // On affiche combien il y a de relevés pour ce jour
                         int compte=0;
-                        for (Object obj : lesRrrrr[0]){
+                        for (Object obj : lesRelevesCel[0]){
                             if (obj.toString().length() > 0) {
                                 compte++;
                             }
@@ -107,14 +109,14 @@ public class AfficheReleverActivity extends Activity {
                         Toast.makeText(AfficheReleverActivity.this, "Il y a "+compte+" relevés pour ce jour.", Toast.LENGTH_SHORT).show();
 
                         // On affiche ces températures dans la ListView
-                        ArrayAdapter<String> itemsAdapter2 = new ArrayAdapter<String>(AfficheReleverActivity.this, android.R.layout.simple_list_item_1, lesRrrrr[0]);
+                        ArrayAdapter<String> itemsAdapter2 = new ArrayAdapter<String>(AfficheReleverActivity.this, android.R.layout.simple_list_item_1, lesRelevesCel[0]);
                         ListViewAfficherR.setAdapter(itemsAdapter2);
                         textViewAfficheTemp.setText("Température (C°)");
                         break;
                     case R.id.btnFahrenheitAfficheReleve:
-                        // On déclare une List lesDegF qui contient nos températures depuis lesRrrrrr
+                        // On déclare une List lesDegF qui contient nos températures depuis lesRelevesCel
                         List lesDegF = new ArrayList();
-                        for (Object obj : lesRrrrr[0]) {
+                        for (Object obj : lesRelevesCel[0]) {
                             lesDegF.add(obj.toString());
                         }
 
@@ -126,11 +128,12 @@ public class AfficheReleverActivity extends Activity {
                             //Toast.makeText(AfficheReleverActivity.this, lesDegF.get(i).toString(), Toast.LENGTH_SHORT).show();
                         }
 
-                        // On affiche ces températures dans la ListView
+                        // Prévient l'utilisateur d'afficher en celsius en premier
                         if (lesDegF.size() == 0) {
                             Toast.makeText(AfficheReleverActivity.this, "Veuillez d'abord afficher en Celsius", Toast.LENGTH_SHORT).show();
                         }
 
+                        // On affiche ces températures dans la ListView
                         ArrayAdapter<String> itemsAdapterF = new ArrayAdapter<String>(AfficheReleverActivity.this, android.R.layout.simple_list_item_1, lesDegF);
                         ListViewAfficherR.setAdapter(itemsAdapterF);
                         textViewAfficheTemp.setText("Température (F°)");
@@ -152,7 +155,7 @@ public class AfficheReleverActivity extends Activity {
         daoBdd.open();
         //Liste des lacs
         List lesLacs = daoBdd.getAllNomLac();
-        //List lesRrrrr = daoBdd.getAllReleveByJour("09", "1");
+        //List lesRelevesCel = daoBdd.getAllReleveByJour("09", "1");
         daoBdd.close();
 
         ArrayAdapter<String> dataAdapterLac = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lesLacs);
@@ -185,10 +188,10 @@ public class AfficheReleverActivity extends Activity {
         date.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
 
         // TEST TOAST BDD
-        //Toast.makeText(AfficheReleverActivity.this, lesRrrrr.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(AfficheReleverActivity.this, lesRelevesCel.toString(), Toast.LENGTH_SHORT).show();
 
         //final ListView ListViewAfficherR = (ListView) findViewById(R.id.ListViewAfficherR);
-        //ArrayAdapter<String> itemsAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lesRrrrr);
+        //ArrayAdapter<String> itemsAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lesRelevesCel);
         //ListViewAfficherR.setAdapter(itemsAdapter2);
 
 

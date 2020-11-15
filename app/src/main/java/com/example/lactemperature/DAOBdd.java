@@ -93,16 +93,19 @@ public class DAOBdd {
         return unReleve; //On retourne le relevé
     }
 
+    // Permet d'obtenir les 4 températures d'un jour en fonction de la date et du lac
     public List<String> getAllReleveByJour(String jour, String mois, String id_lac){
         List<String> listeReleve = new ArrayList<>();
+        // Ajoute 4 String vide à la liste
         for (int i=0;i < 4; i++){
             listeReleve.add("");
         }
         Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac+" AND Mois = "+"'"+mois+"'", null);
+        // Pour chaque élément, si x température n'est pas vide, on l'ajoute à la liste à la place d'un String vide
         if(c.moveToFirst()) {
             do {
                 if (!c.isNull(3)) {
-                    listeReleve.set(0, c.getString(3));
+                    listeReleve.set(0, c.getString(3)); // Exemple: 14 à la place de "" pour Temperature6h
                 } else if (!c.isNull(4)) {
                     listeReleve.set(1, c.getString(4));
                 } else if (!c.isNull(5)) {
@@ -110,60 +113,30 @@ public class DAOBdd {
                 } else if (!c.isNull(6)){
                     listeReleve.set(3, c.getString(6));
                 }
-
             } while (c.moveToNext());
-
         }
         c.close();
         //db.close();
         return listeReleve;
     }
 
-    public List<String> getReleve(String jour, String id_lac){
-        List<String> listeReleve = new ArrayList<>();
-        Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac, null);
-        if(c.moveToFirst()) {
-            listeReleve.add(c.getString(0)+c.getColumnName(0));
-            listeReleve.add(c.getString(1)+c.getColumnName(1));
-            listeReleve.add(c.getString(2)+c.getColumnName(2));
-            listeReleve.add(c.getString(3)+c.getColumnName(3));
-            listeReleve.add(c.getString(7)+c.getColumnName(7));
-        }
-        c.close();
-        db.close();
-        return listeReleve;
-    }
-
-    public List<String> getReleveTest(){
-        List<String> listeReleve = new ArrayList<>();
-        Cursor c = db.rawQuery("SELECT * FROM treleve", null);
-        if(c.moveToLast()) {
-
-            //listeReleve.add(c.getString(0)+c.getColumnName(0));
-            //listeReleve.add(c.getString(1)+c.getColumnName(1));
-            listeReleve.add(c.getString(2)+c.getColumnName(2));/*
-            listeReleve.add(c.getString(3)+c.getColumnName(3));
-            listeReleve.add(c.getString(7)+c.getColumnName(7));*/
-        }
-        //c.close();
-        //db.close();
-        return listeReleve;
-    }
-
+    // Permet d'obtenir une liste avec la moyenne de 4 températures pour un mois et un lac donné
     public List<Integer> getReleveByMois(String mois, String id_lac){
+        // On déclare 2 listes, une avec la somme de x température et une avec le compte total de x température
         List<Integer> listeReleve = new ArrayList<>();
         List<Integer> listeCount = new ArrayList<>();
+        // Ajoute 4 0 aux listes
         for (int i=0;i < 4; i++){
             listeReleve.add(0);
             listeCount.add(0);
         }
-
         Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Mois = "+"'"+mois+"'"+" AND id_lac = "+id_lac, null);
+        // Pour chaque élément, si x température n'est pas vide, on l'additionne à son emplacement dans la liste et on compte +1 dans listeCount
         if(c.moveToFirst()) {
             do {
                 if (!c.isNull(3)) {
-                    listeReleve.set(0, Integer.parseInt(c.getString(3))+listeReleve.get(0));
-                    listeCount.set(0, listeCount.get(0)+1);
+                    listeReleve.set(0, Integer.parseInt(c.getString(3))+listeReleve.get(0)); // Temperature6h est additionné à la valeur située à son emplacement dans la liste
+                    listeCount.set(0, listeCount.get(0)+1); // on ajoute +1 à son emplacement
                 } else if (!c.isNull(4)) {
                     listeReleve.set(1, Integer.parseInt(c.getString(4))+listeReleve.get(1));
                     listeCount.set(1, listeCount.get(1)+1);
@@ -176,16 +149,53 @@ public class DAOBdd {
                 }
             } while (c.moveToNext());
         }
+        // Pour chaque élément dans listeCount
         for (int i=0;i < 4; i++){
+            // si celui-ci est égal à 0 alors on le remplace par 1 (empêche la division par 0)
             if (listeCount.get(i) == 0) {
                 listeCount.set(i, 1);
             }
+            // ajoute à la liste le résultat de la somme de x température divisé par le nombre de x température
             listeReleve.set(i, listeReleve.get(i)/listeCount.get(i));
         }
         return listeReleve;
     }
 
-    public List<Integer> getReleveByMoisTest(String mois, String id_lac){
+    // Méthode de test pour relevés 1
+/*    public List<String> getReleve(String jour, String id_lac){
+        List<String> listeReleve = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM treleve WHERE Jour = "+"'"+jour+"'"+" AND id_lac = "+id_lac, null);
+        if(c.moveToFirst()) {
+            listeReleve.add(c.getString(0)+c.getColumnName(0));
+            listeReleve.add(c.getString(1)+c.getColumnName(1));
+            listeReleve.add(c.getString(2)+c.getColumnName(2));
+            listeReleve.add(c.getString(3)+c.getColumnName(3));
+            listeReleve.add(c.getString(7)+c.getColumnName(7));
+        }
+        c.close();
+        db.close();
+        return listeReleve;
+    }*/
+
+    // Méthode de test pour relevés 2
+/*    public List<String> getReleveTest(){
+        List<String> listeReleve = new ArrayList<>();
+        Cursor c = db.rawQuery("SELECT * FROM treleve", null);
+        if(c.moveToLast()) {
+
+            //listeReleve.add(c.getString(0)+c.getColumnName(0));
+            //listeReleve.add(c.getString(1)+c.getColumnName(1));
+            listeReleve.add(c.getString(2)+c.getColumnName(2));
+            //listeReleve.add(c.getString(3)+c.getColumnName(3));
+            //listeReleve.add(c.getString(7)+c.getColumnName(7));
+        }
+        //c.close();
+        //db.close();
+        return listeReleve;
+    }*/
+
+    // Méthode de test pour relevés 3
+/*    public List<Integer> getReleveByMoisTest(String mois, String id_lac){
         List<Integer> listeReleve = new ArrayList<>();
         for (int i=0;i < 4; i++){
             listeReleve.add(0);
@@ -206,14 +216,13 @@ public class DAOBdd {
             } while (c.moveToNext());
         }
         return listeReleve;
-
-    }
+    }*/
 
     public Cursor getDataReleve(){
         return db.rawQuery("SELECT * FROM treleve", null);
     }
 
-    //pour le Lac
+    // inserer lac dans la bdd
     public long insererLac (Lac unLac){
         //Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues();
@@ -238,17 +247,12 @@ public class DAOBdd {
         c.close(); //On ferme le cursor
         return unLac; //On retourne le lac
     }
-    public Lac getLacWithNumCpt(String nom){
-        //Récupère dans un Cursor les valeurs correspondant à un Lac grâce au nom du lac.
-        Cursor c = db.query(TABLE_LAC, new String[] {COL_IDLAC,COL_NOM,
-                        COL_COORDONNEESLAT, COL_COORDONNEESLONG}, COL_NOM + " = \"" + nom +"\"", null, null,
-                null, null);
-        return cursorToLac(c);
-    }
+
     public Cursor getDataLac(){
         return db.rawQuery("SELECT * FROM tlac", null);
     }
 
+    // Permet de retourner une liste contenant uniquement le noms des lacs
     public List<String> getAllNomLac(){
         List<String> listeNomLacs = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT Nom FROM tlac", null);
@@ -273,12 +277,15 @@ public class DAOBdd {
         db.close();
     }
 
+    // Permet de retourner une liste incluant les coordonnées d'un lac depuis son nom
     public List<String> getGpsByNomLac(String lac) {
         List<String> listeNomLacs = new ArrayList<>();
+        // Ajoute la latitude à la liste
         Cursor c = db.rawQuery("SELECT " + COL_COORDONNEESLAT + " FROM tlac WHERE nom = "+"'"+lac+"'", null);
         if(c.moveToFirst()) {
             listeNomLacs.add(c.getString(0));
         }
+        // Ajoute la longitude à la liste
         Cursor c2 = db.rawQuery("SELECT " + COL_COORDONNEESLONG + " FROM tlac WHERE nom = "+"'"+lac+"'", null);
         if(c2.moveToFirst()) {
             listeNomLacs.add(c2.getString(0));
@@ -289,14 +296,15 @@ public class DAOBdd {
         return listeNomLacs;
     }
 
-    public List<String> getIdByNomLac(String nomLac) {
-        List<String> listeId = new ArrayList<>();
+    // Permet de retourner l'id d'un lac depuis son nom
+    public String getIdByNomLac(String nomLac) {
+        String idLac = "";
         Cursor c = db.rawQuery("SELECT * FROM tlac WHERE nom = "+"'"+nomLac+"'", null);
         if(c.moveToFirst()) {
-            listeId.add(c.getString(0));
+            idLac = c.getString(0);
         }
         c.close();
-        return listeId;
+        return idLac;
     }
 
 }

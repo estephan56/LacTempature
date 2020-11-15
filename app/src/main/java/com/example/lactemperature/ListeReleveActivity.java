@@ -23,6 +23,7 @@ public class ListeReleveActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listereleve);
 
+        // Gestion des attributs final
         final String[] unMois = new String[1];
         final String[] unLac = new String[1];
         final ListView ListViewListeR1 = (ListView) findViewById(R.id.ListViewListeR1);
@@ -36,6 +37,7 @@ public class ListeReleveActivity extends Activity {
         //On ouvre la table
         relBdd.open();
 
+        // Gestion des boutons retour, celsius et farhneiheit
         Button btnRetour = (Button) findViewById(R.id.btnRetourListeReleve);
         Button btnCelsius = (Button) findViewById(R.id.btnCelsiusListeReleve);
         Button btnFahrenheit = (Button) findViewById(R.id.btnFahrenheitListeReleve);
@@ -57,13 +59,13 @@ public class ListeReleveActivity extends Activity {
                         } else {
                             idMoisString = String.valueOf(idMois);
                         }
-                        //Toast.makeText(ListeReleveActivity.this,relBdd.getReleveByMois(idMoisString, relBdd.getIdByNomLac(unLac[0]).get(0)).toString() , Toast.LENGTH_SHORT).show();
 
                         // On affiche ces températures dans la ListView
-                        relevesList[0] = relBdd.getReleveByMois(idMoisString, relBdd.getIdByNomLac(unLac[0]).get(0));
+                        relevesList[0] = relBdd.getReleveByMois(idMoisString, relBdd.getIdByNomLac(unLac[0]));
                         int it=0;
+                        // pour chaque température de relevesList
                         for (Object obj : relevesList[0]) {
-                            //Toast.makeText(ListeReleveActivity.this, obj.toString(), Toast.LENGTH_SHORT).show();
+                            // si x température = 0 alors elle est remplacée par "" (empêche les valeurs vides d'être converti en fahreinheit
                             if (Integer.parseInt(obj.toString()) == 0) {
                                 relevesList[0].set(it, "");
                             }
@@ -75,7 +77,7 @@ public class ListeReleveActivity extends Activity {
                         textViewListeMoyenne.setText("Moyenne température (C°)");
                         break;
                     case R.id.btnFahrenheitListeReleve:
-                        // On déclare une List lesDegF qui contient nos températures depuis lesRrrrrr
+                        // On déclare une List lesDegF qui contient nos températures depuis relevesList
                         List lesDegF = new ArrayList();
                         for (Object obj : relevesList[0]) {
                             lesDegF.add(obj);
@@ -88,11 +90,12 @@ public class ListeReleveActivity extends Activity {
                             }
                         }
 
-                        // On affiche ces températures dans la ListView
+                        // Prévient l'utilisateur d'afficher en celsius en premier
                         if (lesDegF.size() == 0) {
                             Toast.makeText(ListeReleveActivity.this, "Veuillez d'abord afficher en Celsius", Toast.LENGTH_SHORT).show();
                         }
 
+                        // On affiche ces températures dans la ListView
                         ArrayAdapter<String> itemsAdapterF = new ArrayAdapter<String>(ListeReleveActivity.this, android.R.layout.simple_list_item_1, lesDegF);
                         ListViewListeR1.setAdapter(itemsAdapterF);
                         textViewListeMoyenne.setText("Moyenne température (F°)");
@@ -148,10 +151,10 @@ public class ListeReleveActivity extends Activity {
             }
         });
 
+        // Gestion de la listeView des heures
         String[] lesHeures = {"6h", "12h", "18h", "24h"};
 
         final ListView ListViewListeR2 = (ListView) findViewById(R.id.ListViewListeR2);
-        // https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lesHeures);
         ListViewListeR2.setAdapter(itemsAdapter);
 

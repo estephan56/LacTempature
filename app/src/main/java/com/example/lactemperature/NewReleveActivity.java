@@ -73,16 +73,15 @@ public class NewReleveActivity extends Activity {
 
                         // Ajout dans la bdd en fonction de l'heure, récupération de l'id du lac en fonction du nom
                         if (uneHeure[0] == "6h") {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), temp.getText().toString(), null, null,null, releveBdd.getIdByNomLac(unLac[0]).get(0));
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), temp.getText().toString(), null, null,null, releveBdd.getIdByNomLac(unLac[0]));
                         } else if (uneHeure[0] == "12h") {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, temp.getText().toString(), null,null, releveBdd.getIdByNomLac(unLac[0]).get(0));
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, temp.getText().toString(), null,null, releveBdd.getIdByNomLac(unLac[0]));
                         } else if (uneHeure[0] == "18h") {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, temp.getText().toString(),null, releveBdd.getIdByNomLac(unLac[0]).get(0));
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, temp.getText().toString(),null, releveBdd.getIdByNomLac(unLac[0]));
                         } else {
-                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, null,temp.getText().toString(), releveBdd.getIdByNomLac(unLac[0]).get(0));
+                            releve = new Releve(date1.substring(0, 2), date1.substring(3, 5), null, null, null,temp.getText().toString(), releveBdd.getIdByNomLac(unLac[0]));
                         }
                         releveBdd.insererReleve(releve);
-                        //releveBdd.close();
                         finish();
                         // Affichage d'un résumé
                         Toast.makeText(NewReleveActivity.this, "Le relevé a bien été enregistré.", Toast.LENGTH_SHORT).show();
@@ -92,6 +91,7 @@ public class NewReleveActivity extends Activity {
                         break;
 
                     case R.id.btnDateNewR:
+                        // Gestion du calendrier, en choisissant une date, elle est retournée dans le TextView date
                         calendar = Calendar.getInstance();
                         year = calendar.get(Calendar.YEAR);
                         month = calendar.get(Calendar.MONTH);
@@ -101,12 +101,12 @@ public class NewReleveActivity extends Activity {
                                     @Override
                                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                         String affiche;
-                                        // Permet d'afficher un 0 devant le jour/mois si celui-ci est inférieur à 9
-                                        if (month < 9 && day < 9) {
+                                        // Permet d'afficher un 0 devant le jour/mois si celui-ci est inférieur à 10
+                                        if (month < 9 && day < 10) {
                                             affiche = "0" + day + "/" + "0" + (month + 1) + "/" + year;
                                         } else if (month < 9) {
                                             affiche = day + "/" + "0"+(month + 1) + "/" + year;
-                                        } else if (day < 9) {
+                                        } else if (day < 10) {
                                             affiche = "0"+day + "/" + (month + 1) + "/" + year;
                                         } else {
                                             affiche = day + "/" + (month + 1) + "/" + year;
@@ -115,9 +115,9 @@ public class NewReleveActivity extends Activity {
 
                                     }
                                 }, year, month, dayOfMonth);
-                        //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // On ne doit pas pouvoir saisir un relevé dans le futur
                         datePickerDialog.show();
-
+                        break;
                 }
             }
         };
@@ -154,8 +154,6 @@ public class NewReleveActivity extends Activity {
         //Cursor c = daoBdd.getDataLac();
         //Toast.makeText(getApplicationContext(), "il y a " + String.valueOf(c.getCount()) +
         //        " lacs dans la table", Toast.LENGTH_LONG).show();
-
-
 
         // On récupère le nom de tous les lacs
         List lesLacs = daoBdd.getAllNomLac();
